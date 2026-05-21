@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Product Management')}"></head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+<div th:replace="~{fragments :: alerts}"></div>
+
+<div class="container py-4 fade-in-up">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+            <h1 class="h3 fw-bold mb-1">Product Management</h1>
+            <p class="text-muted small mb-0">View, search, and manage product inventory.</p>
+        </div>
+        <a class="btn btn-primary px-4" th:href="@{/products/new}">Add Product</a>
+    </div>
+
+    <div class="card p-3 mb-4">
+        <form class="row g-2 align-items-center" method="get" th:action="@{/products}">
+            <div class="col-lg-4">
+                <input class="form-control" name="query" th:value="${query}" placeholder="Search name/category/brand">
+            </div>
+        <div class="col-md-3 col-lg-2">
+            <select class="form-select" name="sortBy">
+                <option value="nameAsc" th:selected="${sortBy == 'nameAsc'}">Name A-Z</option>
+                <option value="nameDesc" th:selected="${sortBy == 'nameDesc'}">Name Z-A</option>
+                <option value="priceLow" th:selected="${sortBy == 'priceLow'}">Price Low-High</option>
+                <option value="priceHigh" th:selected="${sortBy == 'priceHigh'}">Price High-Low</option>
+                <option value="stockLow" th:selected="${sortBy == 'stockLow'}">Stock Low-High</option>
+                <option value="stockHigh" th:selected="${sortBy == 'stockHigh'}">Stock High-Low</option>
+            </select>
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <select class="form-select" name="size">
+                <option value="5" th:selected="${size == 5}">5 / page</option>
+                <option value="10" th:selected="${size == 10}">10 / page</option>
+                <option value="15" th:selected="${size == 15}">15 / page</option>
+            </select>
+        </div>
+            <div class="col-md-3 col-lg-2 d-grid">
+                <button class="btn btn-primary">Apply Filters</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <p class="small text-muted mb-0 fw-medium">Showing <span th:text="${#lists.size(products)}">0</span> of <span th:text="${totalItems}">0</span> products</p>
+    </div>
+
+    <div class="card overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Type</th>
+                <th>Expiry</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${products}">
+                <td th:text="${p.id}"></td>
+                <td>
+                    <img th:if="${p.imagePath != null && !p.imagePath.isBlank()}" th:src="${p.imagePath}" class="product-image-thumb" alt="Product image">
+                    <span th:if="${p.imagePath == null || p.imagePath.isBlank()}" class="text-muted small">No image</span>
+                </td>
+                <td th:text="${p.name}"></td>
+                <td th:text="${p.category}"></td>
+                <td th:text="${p.brand}"></td>
+                <td>Rs. <span th:text="${#numbers.formatDecimal(p.price,1,2)}"></span></td>
+                <td>
+                    <span class="badge" th:classappend="${p.stockQuantity == 0} ? ' text-bg-danger' : (${p.stockQuantity <= 5} ? ' text-bg-warning' : ' text-bg-success')"
+                          th:text="${p.stockQuantity == 0} ? 'Out of Stock' : (${p.stockQuantity <= 5} ? 'Low Stock' : 'In Stock')"></span>
+                    <div class="small text-muted mt-1" th:text="${p.stockQuantity + ' units'}"></div>
+                </td>
+                <td th:text="${p.productType}"></td>
+                <td th:text="${p.expiryDisplay}"></td>
+                <td>
+                    <a class="btn btn-sm btn-primary px-3" th:href="@{'/products/edit/' + ${p.id}}">Edit</a>
+                    <form class="d-inline" method="post" th:action="@{'/products/delete/' + ${p.id}}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger confirm-action" data-message="Delete this product?">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(products)}"><td colspan="10" class="text-center text-muted py-4">No products found</td></tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <nav th:if="${totalPages > 1}" aria-label="Products pages" class="mt-4">
+        <ul class="pagination justify-content-center flex-wrap">
+            <li class="page-item" th:classappend="${currentPage == 1} ? ' disabled'">
+                <a class="page-link" th:href="@{/products(page=${currentPage - 1},query=${query},sortBy=${sortBy},size=${size})}">Previous</a>
+            </li>
+            <li class="page-item" th:each="pageNo : ${#numbers.sequence(1, totalPages)}" th:classappend="${pageNo == currentPage} ? ' active'">
+                <a class="page-link" th:text="${pageNo}" th:href="@{/products(page=${pageNo},query=${query},sortBy=${sortBy},size=${size})}"></a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? ' disabled'">
+                <a class="page-link" th:href="@{/products(page=${currentPage + 1},query=${query},sortBy=${sortBy},size=${size})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div th:replace="~{fragments :: scripts}"></div>
+</body>
+</html>

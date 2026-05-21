@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Product Catalog')}"></head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+<div th:replace="~{fragments :: alerts}"></div>
+
+<div class="container py-4">
+    <h1 class="h4 mb-3">Product Catalog</h1>
+
+    <form class="row g-2 mb-3" method="get" th:action="@{/products/catalog}">
+        <div class="col-lg-4">
+            <input class="form-control" name="query" th:value="${query}" placeholder="Search by name, category, brand">
+        </div>
+        <div class="col-md-3 col-lg-2">
+            <select class="form-select" name="sortBy">
+                <option value="nameAsc" th:selected="${sortBy == 'nameAsc'}">Name A-Z</option>
+                <option value="nameDesc" th:selected="${sortBy == 'nameDesc'}">Name Z-A</option>
+                <option value="priceLow" th:selected="${sortBy == 'priceLow'}">Price Low-High</option>
+                <option value="priceHigh" th:selected="${sortBy == 'priceHigh'}">Price High-Low</option>
+                <option value="stockLow" th:selected="${sortBy == 'stockLow'}">Stock Low-High</option>
+                <option value="stockHigh" th:selected="${sortBy == 'stockHigh'}">Stock High-Low</option>
+            </select>
+        </div>
+        <div class="col-md-2 col-lg-2">
+            <select class="form-select" name="size">
+                <option value="6" th:selected="${size == 6}">6 / page</option>
+                <option value="9" th:selected="${size == 9}">9 / page</option>
+                <option value="12" th:selected="${size == 12}">12 / page</option>
+            </select>
+        </div>
+        <div class="col-md-3 col-lg-2 d-grid">
+            <button class="btn btn-success">Apply</button>
+        </div>
+    </form>
+
+    <p class="small text-muted">Showing <span th:text="${#lists.size(products)}">0</span> of <span th:text="${totalItems}">0</span> products</p>
+
+    <div class="row g-4 fade-in-up">
+        <div class="col-md-6 col-lg-4" th:each="p : ${products}">
+            <div class="card h-100">
+                <div class="product-image-wrapper">
+                    <img th:if="${p.imagePath != null && !p.imagePath.isBlank()}" th:src="${p.imagePath}" class="card-img-top product-image" alt="Product image">
+                    <div th:if="${p.imagePath == null || p.imagePath.isBlank()}" class="product-image-placeholder">No Image</div>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="fw-bold" th:text="${p.name}"></h5>
+                    <p class="text-muted small mb-1" th:text="${p.category + ' | ' + p.brand}"></p>
+                    <p class="small mb-1">Type: <strong th:text="${p.productType}"></strong></p>
+                    <p class="small mb-2">Expiry: <strong th:text="${p.expiryDisplay}"></strong></p>
+                    <span class="badge mb-2 align-self-start"
+                          th:classappend="${p.stockQuantity == 0} ? ' text-bg-danger' : (${p.stockQuantity <= 5} ? ' text-bg-warning' : ' text-bg-success')"
+                          th:text="${p.stockQuantity == 0} ? 'Out of Stock' : (${p.stockQuantity <= 5} ? 'Low Stock' : 'In Stock')"></span>
+                    <p class="small text-muted mb-2 fw-medium" th:text="${'Stock: ' + p.stockQuantity}"></p>
+                    <p class="small text-warning-emphasis mb-2" th:if="${p.stockQuantity > 0 and p.stockQuantity <= 5}" th:text="${'Hurry, only ' + p.stockQuantity + ' left!'}"></p>
+                    <h6 class="mt-1 mb-3">Rs. <span th:text="${#numbers.formatDecimal(p.price,1,2)}"></span></h6>
+
+                    <form class="mt-auto" method="post" th:action="@{'/cart/add/' + ${p.id}}">
+                        <div class="d-flex gap-2 align-items-center">
+                            <input type="number"
+                                   name="quantity"
+                                   min="1"
+                                   value="1"
+                                   class="form-control"
+                                   th:attr="max=${p.stockQuantity}"
+                                   th:disabled="${p.stockQuantity <= 0}">
+                            <button class="btn btn-primary px-4"
+                                    th:disabled="${p.stockQuantity <= 0}"
+                                    th:text="${p.stockQuantity <= 0} ? 'Out of Stock' : 'Add'">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div th:if="${#lists.isEmpty(products)}" class="col-12 text-center text-muted">No products available</div>
+    </div>
+
+    <nav th:if="${totalPages > 1}" aria-label="Catalog pages" class="mt-4">
+        <ul class="pagination justify-content-center flex-wrap">
+            <li class="page-item" th:classappend="${currentPage == 1} ? ' disabled'">
+                <a class="page-link" th:href="@{/products/catalog(page=${currentPage - 1},query=${query},sortBy=${sortBy},size=${size})}">Previous</a>
+            </li>
+            <li class="page-item" th:each="pageNo : ${#numbers.sequence(1, totalPages)}" th:classappend="${pageNo == currentPage} ? ' active'">
+                <a class="page-link" th:text="${pageNo}" th:href="@{/products/catalog(page=${pageNo},query=${query},sortBy=${sortBy},size=${size})}"></a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? ' disabled'">
+                <a class="page-link" th:href="@{/products/catalog(page=${currentPage + 1},query=${query},sortBy=${sortBy},size=${size})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div th:replace="~{fragments :: scripts}"></div>
+</body>
+</html>

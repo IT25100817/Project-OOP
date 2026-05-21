@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Customers')}"></head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+<div th:replace="~{fragments :: alerts}"></div>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h4 mb-0">Customer Management</h1>
+    </div>
+
+    <form class="row g-2 mb-3" method="get" th:action="@{/customers}">
+        <div class="col-md-6">
+            <input class="form-control" name="query" th:value="${query}" placeholder="Search by ID or username">
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-success">Search</button>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Type</th>
+                <th>Loyalty</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${customers}">
+                <td th:text="${c.id}"></td>
+                <td th:text="${c.username}"></td>
+                <td th:text="${c.fullName}"></td>
+                <td th:text="${c.email}"></td>
+                <td><span class="badge bg-info" th:text="${c.customerType}"></span></td>
+                <td th:text="${c.loyaltyPoints}"></td>
+                <td>
+                    <a class="btn btn-sm btn-outline-primary" th:href="@{'/customers/edit/' + ${c.id}}">Edit</a>
+                    <form th:action="@{'/customers/delete/' + ${c.id}}" method="post" class="d-inline">
+                        <button class="btn btn-sm btn-outline-danger confirm-action" data-message="Delete this customer?" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(customers)}"><td colspan="7" class="text-center text-muted">No customers found</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: scripts}"></div>
+</body>
+</html>

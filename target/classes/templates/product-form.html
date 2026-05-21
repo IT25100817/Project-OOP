@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Product Form')}"></head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+<div th:replace="~{fragments :: alerts}"></div>
+
+<div class="container py-4 fade-in-up">
+    <div class="card p-3 shadow-sm border-0">
+        <div class="card-body">
+            <h1 class="h3 fw-bold mb-4" th:text="${productForm.id == null || productForm.id.isBlank()} ? 'Add Product' : 'Edit Product'">Product</h1>
+
+            <form method="post" enctype="multipart/form-data" th:action="@{/products/save}" th:object="${productForm}">
+                <input type="hidden" th:field="*{id}">
+                <input type="hidden" th:field="*{imagePath}">
+                <div class="row g-3">
+            <div class="col-md-6"><label class="form-label">Name</label><input class="form-control" th:field="*{name}" required></div>
+            <div class="col-md-3"><label class="form-label">Category</label><input class="form-control" th:field="*{category}" required></div>
+            <div class="col-md-3"><label class="form-label">Brand</label><input class="form-control" th:field="*{brand}" required></div>
+            <div class="col-md-3"><label class="form-label">Price</label><input type="number" min="0.01" step="0.01" class="form-control" th:field="*{price}" required></div>
+            <div class="col-md-3"><label class="form-label">Stock Quantity</label><input type="number" min="0" class="form-control" th:field="*{stockQuantity}" required></div>
+            <div class="col-md-3">
+                <label class="form-label">Type</label>
+                <select class="form-select" th:field="*{productType}" id="productTypeSelect">
+                    <option value="NON_PERISHABLE">Non Perishable</option>
+                    <option value="PERISHABLE">Perishable</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Status</label>
+                <select class="form-select" th:field="*{status}">
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="INACTIVE">INACTIVE</option>
+                </select>
+            </div>
+            <div class="col-md-4" id="expiryDateWrapper">
+                <label class="form-label">Expiry Date</label>
+                <input type="date" class="form-control" th:field="*{expiryDate}">
+            </div>
+            <div class="col-md-8">
+                <label class="form-label">Product Image</label>
+                <input type="file" class="form-control" name="imageFile" accept=".jpg,.jpeg,.png,.webp,.gif">
+                <div class="form-text">Optional. Upload JPG, PNG, WEBP, or GIF.</div>
+            </div>
+            <div class="col-md-4" th:if="${productForm.imagePath != null && !productForm.imagePath.isBlank()}">
+                <label class="form-label">Current Image</label>
+                <img class="img-fluid rounded border d-block" th:src="${productForm.imagePath}" alt="Current product image">
+            </div>
+        </div>
+
+                <div class="mt-4 d-flex gap-2">
+                    <button class="btn btn-primary px-4" type="submit">Save Product</button>
+                    <a class="btn btn-light" th:href="@{/products}">Cancel</a>
+                </div>
+            </form>
+
+            <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: scripts}"></div>
+</body>
+</html>

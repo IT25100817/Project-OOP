@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Deliveries')}"></head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+<div th:replace="~{fragments :: alerts}"></div>
+
+<div class="container py-4">
+    <h1 class="h4 mb-3">Delivery Management</h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Order</th>
+                <th>Type</th>
+                <th>Assigned Person</th>
+                <th>Status</th>
+                <th>Fee</th>
+                <th>ETA (hrs)</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="d : ${deliveries}">
+                <td th:text="${d.id}"></td>
+                <td th:text="${d.orderId}"></td>
+                <td th:text="${d.deliveryType}"></td>
+                <td th:text="${d.assignedPerson}"></td>
+                <td><span class="badge bg-secondary" th:text="${d.status}"></span></td>
+                <td>Rs. <span th:text="${#numbers.formatDecimal(d.fee,1,2)}"></span></td>
+                <td th:text="${d.estimatedHours}"></td>
+                <td>
+                    <form class="d-flex gap-1" method="post" th:action="@{'/deliveries/update/' + ${d.id}}">
+                        <input class="form-control form-control-sm" name="assignedPerson" placeholder="Delivery Person">
+                        <select class="form-select form-select-sm" name="status">
+                            <option value="SCHEDULED">SCHEDULED</option>
+                            <option value="ASSIGNED">ASSIGNED</option>
+                            <option value="DISPATCHED">DISPATCHED</option>
+                            <option value="DELIVERED">DELIVERED</option>
+                            <option value="CANCELLED">CANCELLED</option>
+                        </select>
+                        <button class="btn btn-sm btn-outline-success">Save</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(deliveries)}"><td colspan="8" class="text-center text-muted">No deliveries yet</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: scripts}"></div>
+</body>
+</html>
