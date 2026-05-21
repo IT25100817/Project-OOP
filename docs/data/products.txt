@@ -1,5 +1,0 @@
-PRD001|Fresh Milk 1L|Dairy|Highland|3.5|34|PERISHABLE|2027-01-20|ACTIVE|/uploads/products/c5b0144c-3394-4782-a699-d2481a86ef5f.jpg
-PRD002|Basmati Rice 5kg|Grains|Nipuna|16.99|27|NON_PERISHABLE|N/A|ACTIVE|/uploads/products/92af7804-fd4f-43b6-85a9-0caf14bc69ba.webp
-PRD003|Eggs Pack 12|Poultry|Farm Fresh|4.25|45|PERISHABLE|2026-12-30|ACTIVE|/uploads/products/3852c488-dcd5-4263-b808-7b7685d6642e.jpeg
-PRD004|Tea Powder 500g|Beverages|Dilmah|5.4|22|NON_PERISHABLE|N/A|ACTIVE|/uploads/products/e32ddd49-9656-4802-ad36-f1943af853d0.jpg
-PRD005|cheese|milk|awdawd|500.0|9|PERISHABLE|2026-05-22|ACTIVE|/uploads/products/25e9047d-cf4f-4e12-a579-9039231a6f80.jpeg
