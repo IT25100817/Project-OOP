@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Customer Dashboard')}"></head>
+<body>
+<div th:replace="~{fragments :: navbar}"></div>
+<div th:replace="~{fragments :: alerts}"></div>
+
+<div class="container py-4">
+    <h1 class="h3 fw-bold mb-4">Customer Dashboard</h1>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Total Orders</p>
+                    <h3 th:text="${orderCount}">0</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Available Products</p>
+                    <h3 th:text="${productCount}">0</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Pending Orders</p>
+                    <h3 th:text="${pendingOrders}">0</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Delivered Orders</p>
+                    <h3 th:text="${deliveredOrders}">0</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Order Status Breakdown</h5>
+                    <div class="chart-box">
+                        <canvas id="customerStatusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Recent Order Totals</h5>
+                    <div class="chart-box">
+                        <canvas id="recentOrdersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex flex-wrap gap-2">
+        <a class="btn btn-success" th:href="@{/products/catalog}">Browse Products</a>
+        <a class="btn btn-outline-success" th:href="@{/cart}">View Cart</a>
+        <a class="btn btn-outline-dark" th:href="@{/orders}">Order History</a>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: scripts}"></div>
+<script th:inline="javascript">
+    const customerStatusLabels = [[${customerOrderStatusLabels}]];
+    const customerStatusValues = [[${customerOrderStatusValues}]];
+    const recentOrderLabels = [[${recentOrderLabels}]];
+    const recentOrderTotals = [[${recentOrderTotals}]];
+
+    if (document.getElementById('customerStatusChart')) {
+        new Chart(document.getElementById('customerStatusChart'), {
+            type: 'doughnut',
+            data: {
+                labels: customerStatusLabels,
+                datasets: [{
+                    data: customerStatusValues,
+                    backgroundColor: ['#f0ad4e', '#0d6efd', '#198754', '#dc3545']
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {legend: {position: 'bottom'}}
+            }
+        });
+    }
+
+    if (document.getElementById('recentOrdersChart')) {
+        new Chart(document.getElementById('recentOrdersChart'), {
+            type: 'bar',
+            data: {
+                labels: recentOrderLabels,
+                datasets: [{
+                    label: 'Order Total ($)',
+                    data: recentOrderTotals,
+                    borderWidth: 1,
+                    backgroundColor: '#4caf68'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: {beginAtZero: true}
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+﻿target/
+.DS_Store
+.idea/
+*.jar
+*.jar.original
+.jar_patch/
+src/main/.DS_Store
+target/.DS_Store
+target/classes/.DS_Store

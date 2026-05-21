@@ -1,0 +1,4 @@
+CUS001|john|john123|John Silva|john@gmail.com|0711111111|Colombo|CUSTOMER|REGULAR|15
+CUS002|maya|maya123|Maya Fernando|maya@gmail.com|0722222222|Kandy|CUSTOMER|PREMIUM|50
+CUS003|customer|customer|customer1|customer@gmail.com|0701234567|test|CUSTOMER|REGULAR|10
+CUS004|Kavindu|kavindu|Kavindu Umayanga|kavindu@gmail.com|0721231342|test|CUSTOMER|PREMIUM|5
