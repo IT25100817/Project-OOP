@@ -2,6 +2,7 @@ package com.example.grocery.model;
 
 public class StandardDelivery extends Delivery {
 
+
     public StandardDelivery() {
         super();
     }
