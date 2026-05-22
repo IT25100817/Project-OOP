@@ -24,6 +24,7 @@ public class DeliveryService {
         Optional<Delivery> existing = deliveryRepository.findByOrderId(order.getId());
         if (existing.isPresent()) {
             return existing.get();
+
         }
 
         Delivery delivery = "EXPRESS".equalsIgnoreCase(order.getOrderType())
