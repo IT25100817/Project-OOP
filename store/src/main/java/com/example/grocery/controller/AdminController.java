@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+
 @RequestMapping("/admin")
 public class AdminController {
     private final CustomerService customerService;
@@ -28,6 +29,7 @@ public class AdminController {
     private final OrderService orderService;
     private final DeliveryService deliveryService;
     private final PaymentService paymentService;
+
 
     public AdminController(CustomerService customerService, ProductService productService,
                            OrderService orderService, DeliveryService deliveryService,
