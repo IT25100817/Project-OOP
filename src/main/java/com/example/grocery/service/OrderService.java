@@ -1,4 +1,4 @@
-package com.example.grocery.service;
+﻿package com.example.grocery.service;
 
 import com.example.grocery.model.Customer;
 import com.example.grocery.model.ExpressDelivery;
@@ -144,6 +144,21 @@ public class OrderService {
         return orderRepository.update(order);
     }
 
+    // Returns a simple one-line summary of the order
+    // This is a basic example of Abstraction: the caller gets a summary without
+    // knowing how the text is put together
+    public String getOrderSummary(String orderId) {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isEmpty()) {
+            return "Order not found";
+        }
+        Order order = orderOptional.get();
+        return "Order " + order.getId()
+                + " | Customer: " + order.getCustomerName()
+                + " | Status: " + order.getStatus().name()
+                + " | Total: Rs." + order.getTotal();
+    }
+
     private OrderStatus parseStatus(String statusText) {
         try {
             return OrderStatus.valueOf(statusText.toUpperCase());
@@ -152,6 +167,8 @@ public class OrderService {
         }
     }
 
+    // Polymorphism: resolveDeliveryFee calls calculateDeliveryFee() on different
+    // objects (ExpressDelivery or StandardDelivery). Same method name, different behaviour.
     private double resolveDeliveryFee(String orderType, double subtotal) {
         if ("EXPRESS".equalsIgnoreCase(orderType)) {
             return new ExpressDelivery().calculateDeliveryFee(subtotal);
