@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Online Grocery Ordering Management System
 
 SE1020 Object-Oriented Programming project built as a Java web-based application using Spring Boot and file handling (`.txt` files only).
@@ -89,3 +90,6 @@ App automatically creates the `data/` folder and required files if missing.
 ## Notes
 - Project is intentionally beginner-friendly and viva-friendly.
 - Uses clear layered architecture: controller, service, repository, model.
+=======
+# Project-OOP
+>>>>>>> 87e0471b5cc06c4b2d2f344282c47bd52e615a81
