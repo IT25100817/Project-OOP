@@ -1,16 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments :: head('Order Details')}"></head>
 <body>
 <div th:replace="~{fragments :: navbar}"></div>
 <div th:replace="~{fragments :: alerts}"></div>
-
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="h4 mb-0">Order <span th:text="${order.id}"></span></h1>
+        <h1 class="h4 mb-0">Order <span th:text=""></span></h1>
         <a class="btn btn-outline-secondary btn-sm" th:href="@{/orders}">Back</a>
     </div>
-
     <div class="row g-4">
         <div class="col-lg-8">
             <div class="card shadow-sm border-0">
@@ -19,32 +17,34 @@
                     <table class="table table-sm">
                         <thead><tr><th>Product</th><th>Unit Price</th><th>Qty</th><th>Total</th></tr></thead>
                         <tbody>
-                        <tr th:each="item : ${order.items}">
-                            <td th:text="${item.productName}"></td>
-                            <td>Rs. <span th:text="${#numbers.formatDecimal(item.unitPrice,1,2)}"></span></td>
-                            <td th:text="${item.quantity}"></td>
-                            <td>Rs. <span th:text="${#numbers.formatDecimal(item.lineTotal,1,2)}"></span></td>
+                        <tr th:each="item : ">
+                            <td th:text=""></td>
+                            <td>Rs. <span th:text=""></span></td>
+                            <td th:text=""></td>
+                            <td>Rs. <span th:text=""></span></td>
                         </tr>
                         </tbody>
                     </table>
+                    <!-- Shows total item count using getItemCount() - Encapsulation -->
+                    <p class="text-muted small mb-0">Total items: <span th:text=""></span></p>
                 </div>
             </div>
         </div>
-
         <div class="col-lg-4">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
                     <h5 class="fw-bold">Summary</h5>
-                    <p class="mb-1">Customer: <strong th:text="${order.customerName}"></strong></p>
-                    <p class="mb-1">Status: <span class="badge bg-secondary" th:text="${order.status}"></span></p>
-                    <p class="mb-1">Type: <strong th:text="${order.orderType}"></strong></p>
+                    <p class="mb-1">Customer: <strong th:text=""></strong></p>
+                    <p class="mb-1">Status: <span class="badge bg-secondary" th:text=""></span></p>
+                    <p class="mb-1">Type: <strong th:text=""></strong></p>
+                    <!-- Showing the date the order was placed -->
+                    <p class="mb-1">Placed on: <strong th:text=""></strong></p>
                     <hr>
-                    <p class="mb-1">Subtotal: Rs. <strong th:text="${#numbers.formatDecimal(order.subtotal,1,2)}"></strong></p>
-                    <p class="mb-1">Discount: Rs. <strong th:text="${#numbers.formatDecimal(order.discount,1,2)}"></strong></p>
-                    <p class="mb-1">Delivery: Rs. <strong th:text="${#numbers.formatDecimal(order.deliveryFee,1,2)}"></strong></p>
-                    <p class="mb-0">Total: Rs. <strong th:text="${#numbers.formatDecimal(order.total,1,2)}"></strong></p>
-
-                    <form class="mt-3" th:if="${session.role == 'CUSTOMER' and order.canCancel()}" method="post" th:action="@{'/orders/cancel/' + ${order.id}}">
+                    <p class="mb-1">Subtotal: Rs. <strong th:text=""></strong></p>
+                    <p class="mb-1">Discount: Rs. <strong th:text=""></strong></p>
+                    <p class="mb-1">Delivery: Rs. <strong th:text=""></strong></p>
+                    <p class="mb-0">Total: Rs. <strong th:text=""></strong></p>
+                    <form class="mt-3" th:if="" method="post" th:action="@{'/orders/cancel/' + }">
                         <button class="btn btn-outline-danger w-100">Cancel Order</button>
                     </form>
                 </div>
@@ -52,7 +52,6 @@
         </div>
     </div>
 </div>
-
 <div th:replace="~{fragments :: scripts}"></div>
 </body>
 </html>
