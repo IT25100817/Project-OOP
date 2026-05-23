@@ -1,9 +1,11 @@
-package com.example.grocery.model;
+﻿package com.example.grocery.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+// This class holds all the details of a customer order
+// Encapsulation: fields are private and accessed only through getters and setters
 public class Order {
     private String id;
     private String customerId;
@@ -42,6 +44,15 @@ public class Order {
 
     public boolean canCancel() {
         return !dispatched && (status == OrderStatus.PENDING || status == OrderStatus.CONFIRMED);
+    }
+
+    // Returns how many total items are in this order
+    public int getItemCount() {
+        int count = 0;
+        for (OrderItem item : items) {
+            count += item.getQuantity();
+        }
+        return count;
     }
 
     public String getId() {
