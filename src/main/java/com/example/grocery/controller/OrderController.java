@@ -1,4 +1,4 @@
-package com.example.grocery.controller;
+﻿package com.example.grocery.controller;
 
 import com.example.grocery.config.PaginationHelper;
 import com.example.grocery.config.SessionUtil;
@@ -21,9 +21,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+// Inheritance: OrderController inherits from Spring's Controller behaviour
+// by using the @Controller annotation
 @Controller
 @RequestMapping("/orders")
 public class OrderController {
+    // Encapsulation: private fields can only be used inside this class
     private final OrderService orderService;
     private final CartService cartService;
 
@@ -198,6 +201,8 @@ public class OrderController {
                 .toList();
     }
 
+    // Polymorphism: the same sortOrders method behaves differently based on
+    // the sortBy value passed in. Different behaviour from the same method name.
     private List<Order> sortOrders(List<Order> orders, String sortBy) {
         Comparator<Order> comparator = switch (sortBy) {
             case "dateAsc" -> Comparator.comparing(Order::getCreatedAt);
