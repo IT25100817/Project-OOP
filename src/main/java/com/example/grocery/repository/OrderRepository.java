@@ -1,4 +1,4 @@
-package com.example.grocery.repository;
+﻿package com.example.grocery.repository;
 
 import com.example.grocery.model.Order;
 import com.example.grocery.model.OrderItem;
@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+// Inheritance: by annotating with @Repository, this class inherits Spring's
+// data-access behaviour (exception translation, bean registration, etc.)
 @Repository
 public class OrderRepository {
 
@@ -37,6 +39,11 @@ public class OrderRepository {
         return findAll().stream()
                 .filter(o -> o.getCustomerId().equalsIgnoreCase(customerId))
                 .collect(Collectors.toList());
+    }
+
+    // Returns the total number of orders saved in the system
+    public int count() {
+        return findAll().size();
     }
 
     public Order save(Order order) {
