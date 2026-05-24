@@ -26,3 +26,4 @@ public class NonPerishableProduct extends Product {
         return "N/A";
     }
 }
+
